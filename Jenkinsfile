@@ -2,29 +2,27 @@ pipeline {
     agent any
 
     environment {
-        FLASK_APP = 'app.py'
+        PATH = "$HOME/.local/bin:$PATH"
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/Navi126/pipline.git'
+                git url: 'https://github.com/Navi126/pipline.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh '''
-                pip3 install --user -r requirements.txt
-                '''
+                sh 'pip3 install --user -r requirements.txt'
             }
         }
 
         stage('Run Flask App') {
             steps {
-                sh '''
-                nohup python3 app.py > app.log 2>&1 &
-                '''
+                sh 'nohup python3 app.py > app.log 2>&1 &'
+                sh 'sleep 5'
+                sh 'echo "Flask app started in background."'
             }
         }
     }
