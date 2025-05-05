@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        // Optional: Activate virtualenv or define Python path
+        FLASK_APP = 'app.py'
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
@@ -10,15 +15,20 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip3 install -r requirements.txt'
+                sh '''
+                which pip3 || sudo apt-get update && sudo apt-get install -y python3-pip
+                pip3 install -r requirements.txt
+                '''
             }
         }
 
-        stage('Restart App') {
+        stage('Run Flask App') {
             steps {
-                sh 'pkill -f app.py || true'
-                sh 'nohup python3 app.py > output.log 2>&1 &'
+                sh '''
+                nohup python3 app.py > app.log 2>&1 &
+                '''
             }
         }
     }
 }
+
