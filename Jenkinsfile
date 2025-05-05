@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/Navi126/pipeline.git'
+                git 'https://github.com/Navi126/pipline.git'
             }
         }
 
