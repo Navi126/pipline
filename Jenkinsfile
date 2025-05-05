@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://codeberg.org/naveen123/devops-flask-cicd.git'
+                git 'https://github.com/Navi126/pipeline.git'
             }
         }
 
