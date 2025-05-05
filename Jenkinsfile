@@ -1,12 +1,8 @@
 pipeline {
     agent any
 
-    environment {
-        PATH = "$HOME/.local/bin:$PATH"
-    }
-
     stages {
-        stage('Checkout Code') {
+        stage('Clone Repository') {
             steps {
                 git url: 'https://github.com/Navi126/pipline.git'
             }
@@ -18,11 +14,12 @@ pipeline {
             }
         }
 
-        stage('Run Flask App') {
+        stage('Restart Flask App') {
             steps {
-                sh 'nohup python3 app.py > app.log 2>&1 &'
-                sh 'sleep 5'
-                sh 'echo "Flask app started in background."'
+                sh '''
+                    pkill -f app.py || true
+                    nohup python3 app.py > output.log 2>&1 &
+                '''
             }
         }
     }
